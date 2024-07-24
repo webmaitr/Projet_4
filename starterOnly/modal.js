@@ -8,10 +8,14 @@ function editNav() {
 }
 
 // DOM Elements
+const menuIcon = document.querySelector(".icon");
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
-const closeIcon = document.querySelector(".close")
+const closeIcon = document.querySelector(".close");
+
+// launch responsive menu event
+menuIcon.addEventListener("click", editNav);
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -113,7 +117,7 @@ function validateLocation() {
   inputLocation[0].parentElement.setAttribute("data-error", "Vous devez choisir une option.");
   inputLocation[0].parentElement.setAttribute("data-error-visible", true);
   return false;
-}    
+}
 
 // check that conditions checkbox is checked or display error message
 function validateConditions () {
@@ -128,15 +132,13 @@ function validateConditions () {
   return false;
 }
 
-// check that all fields are valid before sending data
-function validate() {
+// launch validate when form is submitted
+document.getElementById("modal-form").onsubmit = validate;
+function validate(event) {
+  event.preventDefault();
   if (validateFirstName() && validateLastName() && validateEmail() && validateBirthdate() && validateQuantity() && validateLocation() && validateConditions()) {
     launchModal();
     const modalBody = document.querySelector(".modal-body");
     modalBody.innerHTML = "Merci ! Votre réservation a bien été reçue.";
-    return true;
-  }
-  else {
-    return false;
   }
 }
