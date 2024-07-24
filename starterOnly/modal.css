@@ -36,6 +36,11 @@ img {
 }
 .header-logo {
     float: left;
+    
+}
+.header-logo img {
+  box-sizing: content-box;
+  width: min(71vw, 250px);
 }
 .main-navbar {
     float: right;
@@ -487,6 +492,7 @@ footer {
     background: #fff;
     color: #000;
     padding: 20px;
+    min-width: 300px;
   }
   .hero-content::after {
     content: unset;
@@ -495,7 +501,7 @@ footer {
     display: none;
   }
   .hero-headline {
-    font-size: 4.5rem;
+    font-size: min(4.5rem, 16vw);
     white-space: normal;
   }
   .hero-text {

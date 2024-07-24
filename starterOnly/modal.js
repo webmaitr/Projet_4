@@ -27,7 +27,7 @@ function closeModal() {
   modalbg.style.display = "none";
 } 
 
-
+// validate Prénom is minimum 2 letters or display error message
 function validateFirstName() {
   let inputFirst = document.getElementById("first");
   let firstName = inputFirst.value;
@@ -41,7 +41,7 @@ function validateFirstName() {
   return false;
 }
 
-
+// validate Nom is minimum 2 letters or display error message
 function validateLastName() {
   let inputLast = document.getElementById("last");
   let lastName = inputLast.value;
@@ -55,6 +55,7 @@ function validateLastName() {
   return false;
 }
 
+// validate Email is valid Email or display error message
 function validateEmail() {
   let inputEmail = document.getElementById("email");
   let emailUser = inputEmail.value;
@@ -69,6 +70,7 @@ function validateEmail() {
   return false;
 }
 
+// validate Date de naissance is a date or display error message
 function validateBirthdate() {
   let inputBirthdate = document.getElementById("birthdate");
   let birthdateUser = inputBirthdate.value;
@@ -83,6 +85,7 @@ function validateBirthdate() {
   return false;
 }
 
+// validate nombre de tournois is a number or display error message
 function validateQuantity() {
   let baliseQuantity = document.getElementById("quantity");
   let qtyOfGame = baliseQuantity.value;
@@ -97,6 +100,7 @@ function validateQuantity() {
   return false;
 }
 
+// check that at least 1 radio is selected or display error message
 function validateLocation() {
   let inputLocation = document.querySelectorAll('input[name="location"]');
   for (let i = 0; i < inputLocation.length; i++) {
@@ -111,6 +115,7 @@ function validateLocation() {
   return false;
 }    
 
+// check that conditions checkbox is checked or display error message
 function validateConditions () {
   let cond = document.getElementById("checkbox1");
   if (cond.checked === true) {
@@ -123,18 +128,15 @@ function validateConditions () {
   return false;
 }
 
+// check that all fields are valid before sending data
 function validate() {
-  
-
   if (validateFirstName() && validateLastName() && validateEmail() && validateBirthdate() && validateQuantity() && validateLocation() && validateConditions()) {
-    console.log("tout ok");
     launchModal();
     const modalBody = document.querySelector(".modal-body");
     modalBody.innerHTML = "Merci ! Votre réservation a bien été reçue.";
     return true;
   }
   else {
-    console.log("y a un prob");
     return false;
   }
 }
