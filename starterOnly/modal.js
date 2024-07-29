@@ -12,7 +12,9 @@ const menuIcon = document.querySelector(".icon");
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
-const closeIcon = document.querySelector(".close");
+const modalbgMsg = document.querySelector(".bground-msg");
+const validMsg = document.querySelector(".valid-msg");
+const closeIcon = document.querySelectorAll(".close");
 
 // launch responsive menu event
 menuIcon.addEventListener("click", editNav);
@@ -25,11 +27,21 @@ function launchModal() {
   modalbg.style.display = "block";
 }
 
+// launch validation message ok
+function launchMsg() {
+  modalbgMsg.style.display = "block";
+  validMsg.innerHTML = "<br>Merci ! Votre réservation a bien été reçue.";
+}
+
 // close modal event
-closeIcon.addEventListener("click", closeModal);
+closeIcon.forEach((icon) => icon.addEventListener("click", closeModal));
 function closeModal() {
   modalbg.style.display = "none";
+  modalbgMsg.style.display = "none";
 } 
+
+// object will gather data from user after each input field validation
+const userData = {};
 
 // validate Prénom is minimum 2 letters or display error message
 function validateFirstName() {
@@ -38,6 +50,7 @@ function validateFirstName() {
   if (firstName.length >= 2) {
   inputFirst.parentElement.setAttribute("data-error", "");
   inputFirst.parentElement.setAttribute("data-error-visible", false);  
+  userData.prenom = firstName;
   return true;
   }
   inputFirst.parentElement.setAttribute("data-error", "Veuillez entrer 2 caractères ou plus pour le champ du prénom.");
@@ -52,6 +65,7 @@ function validateLastName() {
   if (lastName.length >= 2) {
     inputLast.parentElement.setAttribute("data-error", "");
     inputLast.parentElement.setAttribute("data-error-visible", false);
+    userData.nom = lastName;
     return true;
   }
   inputLast.parentElement.setAttribute("data-error", "Veuillez entrer 2 caractères ou plus pour le champ du nom.");
@@ -67,6 +81,7 @@ function validateEmail() {
   if (mailRegExp.test(emailUser)) {
     inputEmail.parentElement.setAttribute("data-error", "");
     inputEmail.parentElement.setAttribute("data-error-visible", false);
+    userData.email = emailUser;
     return true;
   }
   inputEmail.parentElement.setAttribute("data-error", "Veuillez entrer une adresse e-mail valide.");
@@ -81,7 +96,8 @@ function validateBirthdate() {
   let dateRegExp = new RegExp("[12][09][0-9][0-9]\-[0[1-9]|1[0-2]\-[0-2][1-9]|3[01]");
   if (dateRegExp.test(birthdateUser)) {
     inputBirthdate.parentElement.setAttribute("data-error", "");
-  inputBirthdate.parentElement.setAttribute("data-error-visible", false);
+    inputBirthdate.parentElement.setAttribute("data-error-visible", false);
+    userData.anniversaire = birthdateUser;
     return true;
   }
   inputBirthdate.parentElement.setAttribute("data-error", "Veuillez entrer votre date de naissance dans le format JJ/MM/YYYY.");
@@ -96,7 +112,8 @@ function validateQuantity() {
   let qtyRegExp = new RegExp("[1-9]|[1-9][1-9]");
   if (qtyRegExp.test(qtyOfGame)) {
     baliseQuantity.parentElement.setAttribute("data-error", "");
-  baliseQuantity.parentElement.setAttribute("data-error-visible", false);
+    baliseQuantity.parentElement.setAttribute("data-error-visible", false);
+    userData.tournois = qtyOfGame;
     return true;
   }
   baliseQuantity.parentElement.setAttribute("data-error", "Vous devez entrer une valeur.");
@@ -110,7 +127,8 @@ function validateLocation() {
   for (let i = 0; i < inputLocation.length; i++) {
     if (inputLocation[i].checked) {
       inputLocation[i].parentElement.setAttribute("data-error", "");
-      inputLocation[i].parentElement.setAttribute("data-error-visible", false);  
+      inputLocation[i].parentElement.setAttribute("data-error-visible", false);
+      userData.souhait = inputLocation[i].value;  
       return true;
     }
   }    
@@ -122,9 +140,12 @@ function validateLocation() {
 // check that conditions checkbox is checked or display error message
 function validateConditions () {
   let cond = document.getElementById("checkbox1");
+  let info = document.getElementById("checkbox2");
   if (cond.checked === true) {
     cond.parentElement.setAttribute("data-error", "");
     cond.parentElement.setAttribute("data-error-visible", false);
+    userData.conditions = cond.checked;
+    userData.prochains = info.checked;
     return true;
   }
   cond.parentElement.setAttribute("data-error", "Vous devez vérifier que vous acceptez les termes et conditions.");
@@ -136,9 +157,18 @@ function validateConditions () {
 document.getElementById("modal-form").onsubmit = validate;
 function validate(event) {
   event.preventDefault();
+  validateFirstName();
+  validateLastName();
+  validateEmail();
+  validateBirthdate();
+  validateQuantity();
+  validateLocation();
+  validateConditions();
   if (validateFirstName() && validateLastName() && validateEmail() && validateBirthdate() && validateQuantity() && validateLocation() && validateConditions()) {
-    launchModal();
-    const modalBody = document.querySelector(".modal-body");
-    modalBody.innerHTML = "Merci ! Votre réservation a bien été reçue.";
+    console.log(userData);
+    closeModal();
+    launchMsg();
   }
 }
+
+
